@@ -6,41 +6,42 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/07 17:00:01 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/07 17:24:52 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void 	check_bit(char **message, int *bit, int *len, int *message_complete) 
- {
+void	check_bit(char **message, int *bit, int *len, int *message_complete)
+{
 	if (*bit < 0)
-    	{
-        	if ((*message)[*len] == '\0')
-		{        
-            		ft_printf("%s\n", *message);
-            		free(*message);
-            		*message = NULL;
-            		*len = 0;
-            		*message_complete = 1;
+	{
+		if ((*message)[*len] == '\0')
+		{
+			ft_printf("%s\n", *message);
+			free(*message);
+			*message = NULL;
+			*len = 0;
+			*message_complete = 1;
 		}
-        	else
-        	{
-            	(*len)++;
-            	*message = realloc_memory(*message, (*len + 1) * sizeof(char));
-            	if (*message == NULL)
-                	handle_error("Failed to allocate memory");
-           	 (*message)[*len] = '\0';
-       		}
+		else
+		{
+			(*len)++;
+			*message = realloc_memory(*message,
+					(*len + 1) * sizeof(char));
+			if (*message == NULL)
+				handle_error("Failed to allocate memory");
+			(*message)[*len] = '\0';
+		}
 	}
-        *bit = 7;
+	*bit = 7;
 }
 
 int	handle_bit(char **message, int bit, int sig)
 {
 	static int	len = 0;
-	int		message_complete;
-	
+	int			message_complete;
+
 	message_complete = 0;
 	if (sig == SIGUSR1)
 		(*message)[len] = (*message)[len] | (1 << bit);
@@ -55,7 +56,7 @@ void	handler_sig(int sig, siginfo_t *info, void *ucontext)
 {
 	static char	*message = NULL;
 	static int	bit = -1;
-	int	message_complete;
+	int			message_complete;
 
 	(void)ucontext;
 	if (kill(info->si_pid, 0) < 0)
