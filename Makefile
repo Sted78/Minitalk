@@ -6,7 +6,7 @@
 #    By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/06/20 11:03:15 by svanmarc          #+#    #+#              #
-#    Updated: 2023/06/27 17:29:01 by svanmarc         ###   ########.fr        #
+#    Updated: 2023/07/05 18:34:57 by svanmarc         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,8 +14,8 @@ SERVER_SRCS = src/server.c
 CLIENT_SRCS = src/client.c 
 HEADERS = src/minitalk.h
 
-CC = gcc -g -fsanitize=address
-CC_FLAGS = -Wall -Wextra -Werror -Llibft -lft
+CC = gcc
+CC_FLAGS = -Wall -Wextra -Werror -g
 
 .PHONY: all libft clean fclean re
 
@@ -32,10 +32,10 @@ server: ${SERVER_SRCS:.c=.o} libft/libft.a
 client: ${CLIENT_SRCS:.c=.o} libft/libft.a
 	@${CC} ${CC_FLAGS} $^ -o $@ -s
 
-src/server.o: src/server.c ${HEADERS}
-src/client.o: src/client.c ${HEADERS}
+#src/server.o: src/server.c ${HEADERS}
+#src/client.o: src/client.c ${HEADERS}
 
-%.o: %.c ${HEADERS}
+%.o:%.c
 	@${CC} -c $< -o $@ -s
 
 clean:
