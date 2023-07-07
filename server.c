@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/07 10:54:21 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/07 16:19:26 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,37 +32,42 @@ char    *realloc_memory(char *dest, int size)
         return (tmp);
 }
 
+void 	check_bit(char **message, int *bit, int *len, int *message_complete) 
+ {
+	if (*bit < 0)
+    	{
+        	if ((*message)[*len] == '\0')
+		{        
+            		ft_printf("%s\n", *message);
+            		free(*message);
+            		*message = NULL;
+            		*len = 0;
+            		*message_complete = 1;
+		}
+        	else
+        	{
+            	(*len)++;
+            	*message = realloc_memory(*message, (*len + 1) * sizeof(char));
+            	if (*message == NULL)
+                	handle_error("Failed to allocate memory");
+           	 (*message)[*len] = '\0';
+       		}
+	}
+        *bit = 7;
+}
+
 int	handle_bit(char **message, int bit, int sig)
 {
 	static int	len = 0;
-	int	message_complete = 0;
+	int		message_complete;
 	
+	message_complete = 0;
 	if (sig == SIGUSR1)
 		(*message)[len] = (*message)[len] | (1 << bit);
 	else if (sig == SIGUSR2)
 		(*message)[len] = (*message)[len] & ~(1 << bit);
 	bit--;
-	if (bit < 0)
-	{
-		if ((*message)[len] == '\0')
-		{
-			ft_printf("%s\n", *message);
-			free(*message);
-			*message = NULL;
-			len = 0;
-			message_complete = 1;
-		}
-		else
-		{
-			len++;
-			*message = realloc_memory(*message, (len + 1) * sizeof(char));
-//			printf("new message=%s\n", *message);
-			if (*message == NULL)
-				handle_error("Failed to allocate memory");
-			(*message)[len] = '\0';
-		}
-		bit = 7;
-	}
+	check_bit(message, &bit, &len, &message_complete);
 	return (message_complete);
 }
 
