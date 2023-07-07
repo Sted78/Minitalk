@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 15:44:07 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/06/27 17:21:09 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/07 16:59:18 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,4 +18,8 @@
 # include <stdlib.h>
 # include <limits.h>
 # include "../libft/libft.h"
+
+void	handle_error(const char *error_message);
+char	*realloc_memory(char *dest, int size);
+
 #endif
