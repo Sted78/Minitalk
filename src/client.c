@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:10:19 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/02 18:37:42 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/07 17:49:25 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	send_char(char c, pid_t pid)
 	while (bit >= 0)
 	{
 		if (kill(pid, 0) < 0)
-		{
-			ft_printf("Error, can't send signal to server : ");
-			exit(EXIT_FAILURE);
-		}
+			handle_error("Error, can't send signal to server");
 		g_bit_verif = 0;
 		if (c & (1 << bit))
 			kill(pid, SIGUSR1);
@@ -69,11 +66,7 @@ int	main(int ac, char **av)
 	struct sigaction	sa;
 
 	if (ac != 3)
-	{
-		ft_printf("You fucked up!!!\n");
-		ft_printf("Try this noob: ./client <pid> <string to send>\n");
-		exit(EXIT_FAILURE);
-	}
+		handle_error("Try this noob: ./client <pid> <string to send>\n");
 	sa.sa_sigaction = handler_sig;
 	sa.sa_flags = SA_RESTART | SA_NODEFER;
 	sigemptyset(&sa.sa_mask);
@@ -81,10 +74,7 @@ int	main(int ac, char **av)
 	sigaction(SIGUSR2, &sa, NULL);
 	pid = ft_atoi(av[1]);
 	if (!pid)
-	{
-		ft_printf("seems some weird shits happened with the pid");
-		exit(EXIT_FAILURE);
-	}
+		handle_error("seems something weird happened with the pid");
 	send_str(av[2], pid);
 	while (1)
 		sleep(1);
