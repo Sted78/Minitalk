@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/14 18:17:29 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/14 18:33:25 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void handle_char(char *message, int *len) {
     }
 }
 
-void handle_bit(char *message, int *bit, int *len, int sig) {
+void handle_bit(char *message, int bit, int len, int sig) {
     if (sig == SIGUSR1)
-        message[*len] = message[*len] | (1 << *bit);
+        message[len] = message[len] | (1 << bit);
     else if (sig == SIGUSR2)
-        message[*len] = message[*len] & ~(1 << *bit);
+        message[len] = message[len] & ~(1 << bit);
 }
 
 void handler_sig(int sig, siginfo_t *info, void *ucontext) {
@@ -60,7 +60,7 @@ void handler_sig(int sig, siginfo_t *info, void *ucontext) {
         bit = 7;
     }
 
-    handle_bit(message, &bit, &len, sig);
+    handle_bit(message, bit, len, sig);
     bit--;
 
     if (g_message_complete)
