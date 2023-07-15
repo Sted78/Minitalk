@@ -6,11 +6,13 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/14 18:33:25 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/15 08:42:35 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
+
+int	g_bit_message;
 
 void first_msg(char **message) {
     ft_printf("Client sent : ");

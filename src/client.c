@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:10:19 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/07 17:49:25 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/15 08:19:48 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,10 +47,8 @@ void	send_str(char *str, pid_t pid)
 	send_char(0, pid);
 }
 
-void	handler_sig(int sig, siginfo_t *info, void *ucontext)
+void	handler_sig(int sig)
 {
-	(void)info;
-	(void)ucontext;
 	if (sig == SIGUSR1)
 		g_bit_verif = 1;
 	else if (sig == SIGUSR2)
@@ -67,7 +65,7 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 		handle_error("Try this noob: ./client <pid> <string to send>\n");
-	sa.sa_sigaction = handler_sig;
+	sa.sa_handler = handler_sig;
 	sa.sa_flags = SA_RESTART | SA_NODEFER;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
