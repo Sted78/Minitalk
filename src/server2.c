@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/15 09:05:56 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:47:49 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,23 @@ void	first_msg(char **message)
 	(*message)[0] = '\0';
 }
 
-void	handle_char(char *message, int *len)
+void	handle_char(char **message, int *len)
 {
-	if (message[*len] == '\0')
+	if ((*message)[*len] == '\0')
 	{
-		ft_printf("%s\n", message);
-		free(message);
+		ft_printf("%s\n", *message);
+		free(*message);
+		*message = NULL;
 		*len = 0;
 		g_message_complete = 1;
 	}
 	else
 	{
-		message = realloc_memory(message, (*len)  * sizeof(char));
-		if (message == NULL)
+		*message = realloc_memory((*message), (*len) * sizeof(char));
+		if (*message == NULL)
 			handle_error("Failed to allocate memory");
 		(*len)++;
-		message[*len] = '\0';
+		(*message)[*len] = '\0';
 	}
 }
 
@@ -50,11 +51,11 @@ void	handle_bit(char *message, int bit, int len, int sig)
 		message[len] = message[len] & ~(1 << bit);
 }
 
-void	handler_sig(int sig, siginfo_t *info, void *ucontext)
+void	handle_sig(int sig, siginfo_t *info, void *ucontext)
 {
-	static char *message = NULL;
-	static int bit = -1;
-	static int len = 0;
+	static char	*message = NULL;
+	static int	bit = -1;
+	static int	len = 0;
 	
 	(void)ucontext;
 	if (kill(info->si_pid, 0) < 0)
@@ -64,7 +65,7 @@ void	handler_sig(int sig, siginfo_t *info, void *ucontext)
 		if (message == NULL)
 			first_msg(&message);
 		else
-			handle_char(message, &len);
+			handle_char(&message, &len);
 		bit = 7;
 	}
 	handle_bit(message, bit, len, sig);
@@ -81,7 +82,7 @@ int	main(void)
 	struct sigaction	sa;
 	
 	pid = getpid();
-	sa.sa_sigaction = handler_sig;
+	sa.sa_sigaction = handle_sig;
 	sa.sa_flags = SA_SIGINFO | SA_RESTART | SA_NODEFER;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
@@ -90,4 +91,5 @@ int	main(void)
 	ft_printf("green and the boys are funny...\nPID : %d\n", pid);
 	while (1)
 		sleep(1);
-}
+	return (0);
+ }

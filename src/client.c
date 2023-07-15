@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:10:19 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/15 08:19:48 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:26:59 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_bit_verif;
 
-void	send_char(char c, pid_t pid)
+void	send_bit(pid_t pid, char c)
 {
 	int	bit;
 
@@ -34,20 +34,20 @@ void	send_char(char c, pid_t pid)
 	}
 }
 
-void	send_str(char *str, pid_t pid)
+void	handle_char(pid_t pid, char *str)
 {
 	int	current_char;
 
 	current_char = 0;
 	while (str[current_char])
 	{
-		send_char(str[current_char], pid);
+		send_bit(pid, str[current_char]);
 		current_char++;
 	}
-	send_char(0, pid);
+	send_bit(pid, 0);
 }
 
-void	handler_sig(int sig)
+void	handle_sig(int sig)
 {
 	if (sig == SIGUSR1)
 		g_bit_verif = 1;
@@ -65,15 +65,16 @@ int	main(int ac, char **av)
 
 	if (ac != 3)
 		handle_error("Try this noob: ./client <pid> <string to send>\n");
-	sa.sa_handler = handler_sig;
-	sa.sa_flags = SA_RESTART | SA_NODEFER;
+	sa.sa_handler = handle_sig;
+	sa.sa_flags = SA_RESTART;
 	sigemptyset(&sa.sa_mask);
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	pid = ft_atoi(av[1]);
 	if (!pid)
 		handle_error("seems something weird happened with the pid");
-	send_str(av[2], pid);
+	handle_char(pid, av[2]);
 	while (1)
 		sleep(1);
+	return (0);
 }
