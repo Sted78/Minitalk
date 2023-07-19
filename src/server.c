@@ -6,16 +6,14 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/19 12:40:46 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/19 12:44:44 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-int	g_msg_complete;
 
 void	handle_char(char **message, int *bit, int *len, int *message_complete)
-//void  handle_char(char **message, int *bit, int *len)
 {
 	g_msg_complete = 0;
 	if ((*message)[*len] == '\0')
@@ -76,7 +74,6 @@ void	handler_sig(int sig, siginfo_t *info, void *ucontext)
 	if (bit < 0)
 		bit = 7;
 	message_complete = handle_bit(&message, bit, sig);
-//	handle_bit(&message, bit, sig);
 	bit--;
 	if (message_complete)
 		kill(info->si_pid, SIGUSR2);
