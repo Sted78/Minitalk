@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 16:10:19 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/15 10:26:59 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:58:02 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 int	g_bit_verif;
 
-void	send_bit(pid_t pid, char c)
+void	send_bit(char c, pid_t pid)
 {
 	int	bit;
 
@@ -34,17 +34,17 @@ void	send_bit(pid_t pid, char c)
 	}
 }
 
-void	handle_char(pid_t pid, char *str)
+void	handle_bit(char *str, pid_t pid)
 {
 	int	current_char;
 
 	current_char = 0;
 	while (str[current_char])
 	{
-		send_bit(pid, str[current_char]);
+		send_bit(str[current_char], pid);
 		current_char++;
 	}
-	send_bit(pid, 0);
+	send_bit(0, pid);
 }
 
 void	handle_sig(int sig)
@@ -73,8 +73,7 @@ int	main(int ac, char **av)
 	pid = ft_atoi(av[1]);
 	if (!pid)
 		handle_error("seems something weird happened with the pid");
-	handle_char(pid, av[2]);
+	handle_bit(av[2], pid);
 	while (1)
 		sleep(1);
-	return (0);
 }

@@ -6,16 +6,14 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/19 12:44:44 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:43:31 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-
 void	handle_char(char **message, int *bit, int *len, int *message_complete)
 {
-	g_msg_complete = 0;
 	if ((*message)[*len] == '\0')
 	{
 		ft_printf("%s\n", *message);
@@ -28,7 +26,7 @@ void	handle_char(char **message, int *bit, int *len, int *message_complete)
 	{
 		(*len)++;
 		*message = realloc_memory(*message, 
-				(*len + 1) * sizeof(char));
+				(*len) * sizeof(char));
 		if (*message == NULL)
 			handle_error("Failed to allocate memory");
 		(*message)[*len] = '\0';
@@ -64,7 +62,7 @@ void	handler_sig(int sig, siginfo_t *info, void *ucontext)
 	if (kill(info->si_pid, 0) < 0)
 		handle_error("can't send signal to PID");
 	if (bit < 0 && message == NULL)
-	{		
+	{
 		ft_printf("Client sent : ");
 		message = ft_calloc(1, 1);
 		if (message == NULL)
@@ -95,5 +93,5 @@ int	main(void)
 	ft_printf("Take me down to the paradise city, where the grass is ");
 	ft_printf("and the boys are funny...\nPID : %d\n", pid);
 	while (1)
-		sleep (1);
+		sleep (0.1);
 }
