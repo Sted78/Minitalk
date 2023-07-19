@@ -6,7 +6,7 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/19 13:43:31 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:05:31 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,5 +93,5 @@ int	main(void)
 	ft_printf("Take me down to the paradise city, where the grass is ");
 	ft_printf("and the boys are funny...\nPID : %d\n", pid);
 	while (1)
-		sleep (0.1);
+		sleep (1);
 }
