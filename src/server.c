@@ -91,7 +91,7 @@ int	main(void)
 	sigaction(SIGUSR1, &sa, NULL);
 	sigaction(SIGUSR2, &sa, NULL);
 	ft_printf("Take me down to the paradise city, where the grass is ");
-	ft_printf("and the boys are funny...\nPID : %d\n", pid);
+	ft_printf("green and the boys are funny...\nPID : %d\n", pid);
 	while (1)
 		sleep (1);
 }
