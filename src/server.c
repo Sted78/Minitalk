@@ -6,13 +6,13 @@
 /*   By: svanmarc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 09:21:11 by svanmarc          #+#    #+#             */
-/*   Updated: 2023/07/19 14:05:31 by svanmarc         ###   ########.fr       */
+/*   Updated: 2023/07/20 06:44:52 by svanmarc         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minitalk.h"
 
-void	handle_char(char **message, int *bit, int *len, int *message_complete)
+void	handle_char(char **message, int *len, int *message_complete)
 {
 	if ((*message)[*len] == '\0')
 	{
@@ -46,7 +46,7 @@ int	handle_bit(char **message, int bit, int sig)
 	bit--;
 	if (bit < 0)
 	{
-		handle_char(message, &bit, &len, &message_complete);
+		handle_char(message, &len, &message_complete);
 		bit = 7;
 	}
 	return (message_complete);
